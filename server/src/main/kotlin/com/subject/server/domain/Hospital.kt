@@ -7,22 +7,15 @@ import javax.persistence.GenerationType.IDENTITY
 import javax.persistence.Id
 
 @Entity
-class Hospital {
+class Hospital(
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "hospital_id")
-    var id: Long? = null
-    private set
-
+    val id: Long? = null,
     @Column(length = 45)
-    var name: String? = null
-    private set
-
+    var name: String,
     @Column(length = 20, unique = true)
-    var institutionNumber: String? = null
-    private set
-
+    var institutionNumber: String,
     @Column(length = 10)
-    var directorName: String? = null
-    private set
-}
+    var directorName: String
+) {}

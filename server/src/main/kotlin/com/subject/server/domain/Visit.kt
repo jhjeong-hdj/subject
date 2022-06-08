@@ -8,28 +8,16 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType.IDENTITY
 import javax.persistence.Id
 import javax.persistence.JoinColumn
-import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
 
 @Entity
-class Visit {
-
+class Visit(
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "visit_id")
-    var id: Long? = null
-    private set
-
+    val id: Long ?= null,
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "hospital_id")
-    var hospital: Hospital? = null
-    private set
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "patient_id")
-    var patient: Patient? = null
-    private set
-
-    var receptionDate: LocalDateTime? = null
-    private set
-}
+    var hospital: Hospital,
+    val receptionDate: LocalDateTime
+) {}
