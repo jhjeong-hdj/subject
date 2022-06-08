@@ -9,7 +9,7 @@ fun mockPatient(
     name: String = "환자1",
     registrationNumber: String = "1",
     genderCode: GenderCode = CODE_M,
-    birthday: String = "2022-06-07",
+    birthday: String = "2022.06.07",
     phoneNumber: String = "010-1111-1111",
     visit: Visit? = null
 ): Patient {
@@ -30,10 +30,7 @@ fun mockVisit(
     hospitalName: String = "네이버",
     receptionDateString: String = "2022-06-01 13:00"
 ): Visit {
-    val hospital = Hospital(
-        name = hospitalName,
-        institutionNumber = "102",
-        directorName = "김원장")
+    val hospital = mockHospital()
     val receptionDate = LocalDateTime.parse(
         receptionDateString,
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
@@ -42,5 +39,19 @@ fun mockVisit(
     return Visit(
         hospital = hospital,
         receptionDate = receptionDate
+    )
+}
+
+fun mockHospital(
+    hospitalId: Long = 1L,
+    hospitalName: String = "테스트병원1",
+    institutionNumber: String = "1001",
+    directorName: String = "김원장"
+): Hospital {
+    return Hospital(
+        id = hospitalId,
+        name = hospitalName,
+        institutionNumber = institutionNumber,
+        directorName = directorName
     )
 }

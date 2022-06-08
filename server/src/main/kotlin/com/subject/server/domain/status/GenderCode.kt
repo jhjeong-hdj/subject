@@ -8,11 +8,19 @@ enum class GenderCode(
     CODE_F("여", 'F');
 
     companion object {
-        fun findGenderDescriptionByCode(code: Char): String? {
+        fun findGenderDescriptionByCode(code: Char): String {
             return GenderCode
                 .values()
                 .find { it.code == code }
                 ?.description
+                ?: throw Exception()
+        }
+
+        // todo : custom exception 으로 변경
+        fun findGenderByCode(code: Char): GenderCode {
+            return GenderCode
+                .values()
+                .find { it.code == code } ?: throw Exception()
         }
     }
 }
