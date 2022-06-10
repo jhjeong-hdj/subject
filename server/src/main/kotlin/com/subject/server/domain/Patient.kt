@@ -10,6 +10,8 @@ import java.time.LocalDateTime
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.EnumType.STRING
+import javax.persistence.Enumerated
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType.IDENTITY
 import javax.persistence.Id
@@ -29,11 +31,13 @@ class Patient(
     @Column(length = 13, unique = true)
     val registrationNumber: String,
     @Column(length = 10)
+    @Enumerated(STRING)
     var genderCode: GenderCode?,
     @Column(length = 10)
     val birthday: String?,
     @Column(length = 20)
     var phoneNumber: String?,
+    @Enumerated(STRING)
     var status: PatientStatus = EXIST
 ) {
     fun getLastVisitedDate(): LocalDateTime? {

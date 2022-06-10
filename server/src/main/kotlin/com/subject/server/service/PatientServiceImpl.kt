@@ -7,7 +7,7 @@ import com.subject.server.domain.status.GenderCode.Companion
 import com.subject.server.domain.status.PatientStatus.DELETE
 import com.subject.server.dto.AddPatientRequestDto
 import com.subject.server.dto.GetPatientResponseDto
-import com.subject.server.dto.SearchCondition
+import com.subject.server.repository.dsl.SearchCondition
 import com.subject.server.dto.UpdatePatientRequestDto
 import com.subject.server.exception.extract
 import com.subject.server.repository.HospitalRepository
@@ -16,6 +16,8 @@ import com.subject.server.util.toLocalDateTime
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Service
 @Transactional
@@ -23,12 +25,13 @@ class PatientServiceImpl(
     private val patientRepository: PatientRepository,
     private val hospitalRepository: HospitalRepository
 ) : PatientService {
-    //todo : 접수번호 비관적 락 걸고 실패 시에 재시도 하게끔 aop 구성
+    private var num = 0
+    private var date = ""
     override fun addPatient(requestDto: AddPatientRequestDto) {
         val findHospital = hospitalRepository.findByIdOrNull(requestDto.hospitalId).extract()
         val patient = Patient(
             name = requestDto.name,
-            registrationNumber = "10",
+            registrationNumber = receptionDateGenerator(),
             phoneNumber = requestDto.phoneNumber,
             birthday = requestDto.birthday,
             genderCode = GenderCode.findGenderByCode(requestDto.genderCode)
@@ -39,6 +42,7 @@ class PatientServiceImpl(
                 receptionDate = toLocalDateTime(requestDto.receptionDate)
             )
         )
+
         patientRepository.save(patient)
     }
 
@@ -76,5 +80,20 @@ class PatientServiceImpl(
         ).map {
             GetPatientResponseDto.of(it)
         }.toList()
+    }
+
+    private fun receptionDateGenerator() : String{
+        val date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+        if(date != this.date){
+            this.date = date
+            num = 0
+        }
+        num += 1
+        val nextNumString = num.toString()
+        var result : String = date
+        for(i in nextNumString.length..4){
+            result += '0'
+        }
+        return result + nextNumString
     }
 }
