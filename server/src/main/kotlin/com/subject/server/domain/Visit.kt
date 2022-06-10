@@ -20,4 +20,4 @@ class Visit(
     @JoinColumn(name = "hospital_id")
     var hospital: Hospital,
     val receptionDate: LocalDateTime
-) {}
+)

@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 fun mockPatient(
+    patientId: Long? = 1L,
     name: String = "환자1",
     registrationNumber: String = "1",
     genderCode: GenderCode = CODE_M,
@@ -14,6 +15,7 @@ fun mockPatient(
     visit: Visit? = null
 ): Patient {
     val patient = Patient(
+        id = patientId,
         name = name,
         registrationNumber = registrationNumber,
         genderCode = genderCode,
@@ -27,23 +29,31 @@ fun mockPatient(
 }
 
 fun mockVisit(
-    hospitalName: String = "네이버",
+    hospitalId: Long ?= 1L,
+    hospitalName: String = "테스트병원1",
+    institutionNumber: String = "1001",
+    directorName: String = "김원장",
+    visitId: Long ?= 1L,
     receptionDateString: String = "2022-06-01 13:00"
 ): Visit {
-    val hospital = mockHospital()
+    val hospital = mockHospital(hospitalId,
+        hospitalName,
+        institutionNumber,
+        directorName)
     val receptionDate = LocalDateTime.parse(
         receptionDateString,
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
     )
 
     return Visit(
+        id = visitId,
         hospital = hospital,
         receptionDate = receptionDate
     )
 }
 
 fun mockHospital(
-    hospitalId: Long = 1L,
+    hospitalId: Long ?= 1L,
     hospitalName: String = "테스트병원1",
     institutionNumber: String = "1001",
     directorName: String = "김원장"

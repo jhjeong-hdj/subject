@@ -42,4 +42,14 @@ class Patient(
     fun addVisit(visit: Visit) {
         visitList.add(visit)
     }
+
+    fun changePatientInfo(
+        name: String?,
+        genderCode: GenderCode?,
+        phoneNumber: String?
+    ) {
+        this.name = name ?: this.name
+        this.genderCode = genderCode ?: this.genderCode
+        this.phoneNumber = phoneNumber ?: this.phoneNumber
+    }
 }
