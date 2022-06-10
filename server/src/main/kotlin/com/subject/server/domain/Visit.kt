@@ -1,5 +1,6 @@
 package com.subject.server.domain
 
+import com.querydsl.core.annotations.QueryEntity
 import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -11,6 +12,7 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
 @Entity
+@QueryEntity
 class Visit(
     @Id
     @GeneratedValue(strategy = IDENTITY)

@@ -21,7 +21,6 @@ enum class CustomExceptionType(
     fun toException(message: String? = null): CustomException {
         return CustomException(httpStatus, message ?: defaultMessage)
     }
-
 }
 
 data class ErrorResponse(

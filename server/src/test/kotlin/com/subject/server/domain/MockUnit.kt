@@ -2,6 +2,8 @@ package com.subject.server.domain
 
 import com.subject.server.domain.status.GenderCode
 import com.subject.server.domain.status.GenderCode.CODE_M
+import com.subject.server.domain.status.PatientStatus
+import com.subject.server.domain.status.PatientStatus.EXIST
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -12,7 +14,8 @@ fun mockPatient(
     genderCode: GenderCode = CODE_M,
     birthday: String = "2022.06.07",
     phoneNumber: String = "010-1111-1111",
-    visit: Visit? = null
+    visit: Visit? = null,
+    status: PatientStatus = EXIST
 ): Patient {
     val patient = Patient(
         id = patientId,
@@ -20,7 +23,8 @@ fun mockPatient(
         registrationNumber = registrationNumber,
         genderCode = genderCode,
         birthday = birthday,
-        phoneNumber = phoneNumber
+        phoneNumber = phoneNumber,
+        status = status
     )
     if (visit != null)
         patient.addVisit(visit)
@@ -29,17 +33,19 @@ fun mockPatient(
 }
 
 fun mockVisit(
-    hospitalId: Long ?= 1L,
+    hospitalId: Long? = 1L,
     hospitalName: String = "테스트병원1",
     institutionNumber: String = "1001",
     directorName: String = "김원장",
-    visitId: Long ?= 1L,
+    visitId: Long? = 1L,
     receptionDateString: String = "2022-06-01 13:00"
 ): Visit {
-    val hospital = mockHospital(hospitalId,
+    val hospital = mockHospital(
+        hospitalId,
         hospitalName,
         institutionNumber,
-        directorName)
+        directorName
+    )
     val receptionDate = LocalDateTime.parse(
         receptionDateString,
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
@@ -53,7 +59,7 @@ fun mockVisit(
 }
 
 fun mockHospital(
-    hospitalId: Long ?= 1L,
+    hospitalId: Long? = 1L,
     hospitalName: String = "테스트병원1",
     institutionNumber: String = "1001",
     directorName: String = "김원장"

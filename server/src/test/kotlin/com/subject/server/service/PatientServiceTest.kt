@@ -5,6 +5,7 @@ import com.subject.server.domain.mockHospital
 import com.subject.server.domain.mockPatient
 import com.subject.server.domain.mockVisit
 import com.subject.server.domain.status.GenderCode
+import com.subject.server.domain.status.PatientStatus.DELETE
 import com.subject.server.dto.AddPatientRequestDto
 import com.subject.server.dto.UpdatePatientRequestDto
 import com.subject.server.exception.CustomException
@@ -15,8 +16,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
-import org.assertj.core.api.Assertions
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -133,6 +133,20 @@ internal class PatientServiceTest {
         // Given
         val basePatientId = 1L
         every { patientRepository.findByIdOrNull(basePatientId) } returns null
+
+        // When & then
+        assertThrows<CustomException> {
+            patientService.getPatient(basePatientId)
+        }
+    }
+
+    @DisplayName("하나의 환자 정보 조회 실패 : 환자가 삭제되어있음")
+    @Test
+    fun getPatientFailDeletedPatient() {
+        // Given
+        val basePatientId = 1L
+        val patient = mockPatient(status = DELETE)
+        every { patientRepository.findByIdOrNull(basePatientId) } returns patient
 
         // When & then
         assertThrows<CustomException> {
