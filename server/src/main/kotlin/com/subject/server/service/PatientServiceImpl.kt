@@ -57,6 +57,7 @@ class PatientServiceImpl(
 
     override fun deletePatient(id: Long) {
         val findPatient = patientRepository.findByIdOrNull(id).extract()
+        findPatient.isExistOrThrow()
         findPatient.status = DELETE
     }
 
