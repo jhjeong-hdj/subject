@@ -12,6 +12,7 @@ interface DslPatientRepository {
     fun findByPageAndLimit(
         page: Long,
         limit: Long,
-        condition: SearchCondition?
+        condition: SearchCondition?,
+        keyword: String?
     ): List<Patient>
 }

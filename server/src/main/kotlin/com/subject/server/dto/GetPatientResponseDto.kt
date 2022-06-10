@@ -8,9 +8,9 @@ data class GetPatientResponseDto(
     val visitList: List<GetVisitResponseDto>,
     val name: String,
     val registrationNumber: String,
-    val genderCodeDescription: String,
-    val birthday: String,
-    val phoneNumber: String
+    val genderCodeDescription: String?,
+    val birthday: String?,
+    val phoneNumber: String?
 ) {
     companion object {
         fun of(patient: Patient): GetPatientResponseDto {
@@ -19,7 +19,7 @@ data class GetPatientResponseDto(
                 visitList = patient.visitList.map { GetVisitResponseDto.of(it) }.toList(),
                 name = patient.name,
                 registrationNumber = patient.registrationNumber,
-                genderCodeDescription = patient.genderCode.description,
+                genderCodeDescription = patient.genderCode?.description,
                 birthday = patient.birthday,
                 phoneNumber = patient.phoneNumber
             )

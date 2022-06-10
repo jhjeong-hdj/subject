@@ -65,12 +65,14 @@ class PatientServiceImpl(
     override fun getPatients(
         page: Long,
         limit: Long,
-        condition: SearchCondition?
+        condition: SearchCondition?,
+        keyword: String?
     ): List<GetPatientResponseDto> {
         return patientRepository.findByPageAndLimit(
             page = page,
             limit = limit,
-            condition = condition
+            condition = condition,
+            keyword = keyword
         ).map {
             GetPatientResponseDto.of(it)
         }.toList()

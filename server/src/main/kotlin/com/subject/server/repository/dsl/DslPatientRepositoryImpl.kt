@@ -1,6 +1,5 @@
 package com.subject.server.repository.dsl
 
-import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.subject.server.domain.Patient
 import com.subject.server.domain.QPatient.patient
@@ -11,30 +10,15 @@ class DslPatientRepositoryImpl(private val query: JPAQueryFactory) : DslPatientR
     override fun findByPageAndLimit(
         page: Long,
         limit: Long,
-        condition: SearchCondition?
+        condition: SearchCondition?,
+        keyword: String?
     ): List<Patient> {
         return query
             .select(patient)
             .from(patient)
-            .where(
-                patientNameEq(condition?.patientName),
-                registrationNumberEq(condition?.registrationNumber),
-                birthdayEq(condition?.birthday)
-            )
+            .where(condition?.getPatientBooleanExpressionByKeyword(keyword!!))
             .offset(page)
             .limit(limit)
             .fetch()
-    }
-
-    private fun patientNameEq(patientName: String?): BooleanExpression? {
-        return patientName?.let { patient.name.eq(it) }
-    }
-
-    private fun registrationNumberEq(registrationNumber: String?): BooleanExpression? {
-        return registrationNumber?.let { patient.name.eq(it) }
-    }
-
-    private fun birthdayEq(birthday: String?): BooleanExpression? {
-        return birthday?.let { patient.name.eq(it) }
     }
 }

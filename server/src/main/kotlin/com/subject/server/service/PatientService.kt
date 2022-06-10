@@ -13,6 +13,7 @@ interface PatientService {
     fun getPatients(
         page: Long,
         limit: Long,
-        condition: SearchCondition?
+        condition: SearchCondition?,
+        keyword: String?
     ): List<GetPatientResponseDto>
 }
