@@ -18,7 +18,7 @@ enum class GenderCode(
 
         // todo : custom exception 으로 변경
         fun findGenderByCode(code: Char?): GenderCode? {
-            return code?.let {initial ->
+            return code?.let { initial ->
                 GenderCode.values().find { it.code == initial }
             }
         }

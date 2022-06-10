@@ -4,8 +4,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class RegistrationNumberTranslator {
-    companion object{
-        fun localDateTimeToString(localDateTime: LocalDateTime) : String{
+    companion object {
+        fun localDateTimeToString(localDateTime: LocalDateTime): String {
             return localDateTime.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
         }
     }

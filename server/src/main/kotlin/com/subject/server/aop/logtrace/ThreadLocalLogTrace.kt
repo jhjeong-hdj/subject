@@ -1,11 +1,11 @@
 package com.subject.server.aop.logtrace
 
-import org.slf4j.LoggerFactory
 import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 @Component
-class ThreadLocalLogTrace : LogTrace{
+class ThreadLocalLogTrace : LogTrace {
     private val traceHolder = ThreadLocal<TraceId>()
 
     override fun begin(message: String): TraceStatus {
@@ -16,7 +16,7 @@ class ThreadLocalLogTrace : LogTrace{
         return TraceStatus(traceId, startTimeMillis, message)
     }
 
-    private fun syncTraceId(){
+    private fun syncTraceId() {
         val traceId = traceHolder.get()
         traceId?.let {
             traceHolder.set(it.createNextId())
@@ -45,11 +45,11 @@ class ThreadLocalLogTrace : LogTrace{
                 e.toString()
             )
         } ?: log.info(
-                "[{}] {}{} time={}ms",
-                traceId.id,
-                addSpace(COMPLETE_PREFIX, traceId.level),
-                status.message,
-                resultTimeMillis
+            "[{}] {}{} time={}ms",
+            traceId.id,
+            addSpace(COMPLETE_PREFIX, traceId.level),
+            status.message,
+            resultTimeMillis
         )
 
         releaseTraceId()
@@ -57,15 +57,15 @@ class ThreadLocalLogTrace : LogTrace{
 
     private fun releaseTraceId() {
         val traceId = traceHolder.get()
-        when{
+        when {
             traceId.isFirstLevel() -> traceHolder.remove()
             else -> traceHolder.set(traceId.createPreviousId())
         }
     }
 
-    private fun addSpace(prefix: String, level : Int) : Any {
+    private fun addSpace(prefix: String, level: Int): Any {
         val stringBuilder = StringBuilder()
-        for(i in 0..level) {
+        for (i in 0..level) {
             when (i) {
                 (level - 1) -> stringBuilder.append("|$prefix")
                 else -> stringBuilder.append("|   ")
@@ -75,11 +75,11 @@ class ThreadLocalLogTrace : LogTrace{
         return stringBuilder.toString()
     }
 
-    companion object{
+    companion object {
         const val START_PREFIX = "-->"
         const val COMPLETE_PREFIX = "<--"
         const val EX_PREFIX = "<X-"
 
-        private val log : Logger = LoggerFactory.getLogger(ThreadLocalLogTrace::class.java)
+        private val log: Logger = LoggerFactory.getLogger(ThreadLocalLogTrace::class.java)
     }
 }

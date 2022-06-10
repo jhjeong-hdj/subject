@@ -1,7 +1,6 @@
 package com.subject.server.dto
 
 import com.subject.server.util.StringDateTimeFormat
-import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Pattern
 import javax.validation.constraints.Size
 

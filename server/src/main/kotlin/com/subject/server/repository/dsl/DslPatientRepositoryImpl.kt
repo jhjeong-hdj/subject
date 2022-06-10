@@ -3,8 +3,8 @@ package com.subject.server.repository.dsl
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.subject.server.domain.Patient
 import com.subject.server.domain.QPatient.patient
+import com.subject.server.domain.status.PatientStatus.EXIST
 import com.subject.server.repository.DslPatientRepository
-import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 
@@ -20,7 +20,10 @@ class DslPatientRepositoryImpl(private val query: JPAQueryFactory) : DslPatientR
         return query
             .select(patient)
             .from(patient)
-            .where(condition?.getPatientBooleanExpressionByKeyword(keyword!!))
+            .where(
+                condition?.getPatientBooleanExpressionByKeyword(keyword!!),
+                patient.status.eq(EXIST)
+            )
             .offset(page)
             .limit(limit)
             .fetch()

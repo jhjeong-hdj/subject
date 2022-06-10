@@ -4,17 +4,22 @@ import org.aspectj.lang.annotation.Pointcut
 
 class PointCuts {
     @Pointcut("execution(* com.subject.server..*(..))")
-    private fun allSystem(){}
+    private fun allSystem() {
+    }
 
     @Pointcut("execution(* *..*Service.*(..))")
-    private fun allService(){}
+    private fun allService() {
+    }
 
     @Pointcut("execution(* *..*Repository.*(..))")
-    private fun allRepository(){}
+    private fun allRepository() {
+    }
 
     @Pointcut("execution(* *..*Controller.*(..))")
-    private fun allController(){}
+    private fun allController() {
+    }
 
     @Pointcut("allSystem() && (allService() || allRepository() || allController())")
-    fun allAccess(){}
+    fun allAccess() {
+    }
 }

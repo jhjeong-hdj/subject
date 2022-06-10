@@ -7,11 +7,11 @@ import com.subject.server.domain.status.GenderCode.Companion
 import com.subject.server.domain.status.PatientStatus.DELETE
 import com.subject.server.dto.AddPatientRequestDto
 import com.subject.server.dto.GetPatientResponseDto
-import com.subject.server.repository.dsl.SearchCondition
 import com.subject.server.dto.UpdatePatientRequestDto
 import com.subject.server.exception.extract
 import com.subject.server.repository.HospitalRepository
 import com.subject.server.repository.PatientRepository
+import com.subject.server.repository.dsl.SearchCondition
 import com.subject.server.util.toLocalDateTime
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -82,16 +82,16 @@ class PatientServiceImpl(
         }.toList()
     }
 
-    private fun receptionDateGenerator() : String{
+    private fun receptionDateGenerator(): String {
         val date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-        if(date != this.date){
+        if (date != this.date) {
             this.date = date
             num = 0
         }
         num += 1
         val nextNumString = num.toString()
-        var result : String = date
-        for(i in nextNumString.length..4){
+        var result: String = date
+        for (i in nextNumString.length..4) {
             result += '0'
         }
         return result + nextNumString
