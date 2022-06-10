@@ -7,6 +7,7 @@ import com.subject.server.domain.status.GenderCode.Companion
 import com.subject.server.domain.status.PatientStatus.DELETE
 import com.subject.server.dto.AddPatientRequestDto
 import com.subject.server.dto.GetPatientResponseDto
+import com.subject.server.dto.SearchCondition
 import com.subject.server.dto.UpdatePatientRequestDto
 import com.subject.server.exception.extract
 import com.subject.server.repository.HospitalRepository
@@ -61,7 +62,17 @@ class PatientServiceImpl(
         return GetPatientResponseDto.of(findPatient)
     }
 
-    override fun getPatients(page: Int, offset: Int): List<GetPatientResponseDto> {
-        TODO("Not yet implemented")
+    override fun getPatients(
+        page: Long,
+        limit: Long,
+        condition: SearchCondition?
+    ): List<GetPatientResponseDto> {
+        return patientRepository.findByPageAndLimit(
+            page = page,
+            limit = limit,
+            condition = condition
+        ).map {
+            GetPatientResponseDto.of(it)
+        }.toList()
     }
 }
