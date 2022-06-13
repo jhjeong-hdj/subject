@@ -40,7 +40,7 @@ class PatientServiceImpl(
         patient.addVisit(
             Visit(
                 hospitalUid = findHospital.id,
-                receptionDate = toLocalDateTime(requestDto.receptionDate)
+                receptionDate = requestDto.receptionDate.toLocalDateTime()
             )
         )
 
