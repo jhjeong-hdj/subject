@@ -27,8 +27,9 @@ internal class PatientControllerTest {
     fun init() {
         clearMocks(patientService)
     }
+
     @Test
-    fun parameterTest(){
+    fun parameterTest() {
         assertThat(controller).isNotNull
     }
 
@@ -120,14 +121,25 @@ internal class PatientControllerTest {
         // Given
         val basePatientId = 1L
         val baseHospitalId = 1L
-        every { patientService.deletePatientVisitInfoFromHospital(basePatientId, baseHospitalId) } returns Unit
+        every {
+            patientService.deletePatientVisitInfoFromHospital(
+                basePatientId,
+                baseHospitalId
+            )
+        } returns Unit
 
         // When
-        val responseEntity = controller.deletePatientVisitInfoFromHospital(basePatientId, baseHospitalId)
+        val responseEntity =
+            controller.deletePatientVisitInfoFromHospital(basePatientId, baseHospitalId)
 
         // Then
         assertThat(responseEntity.statusCode).isEqualTo(HttpStatus.OK)
-        verify(exactly = 1) { patientService.deletePatientVisitInfoFromHospital(basePatientId, baseHospitalId) }
+        verify(exactly = 1) {
+            patientService.deletePatientVisitInfoFromHospital(
+                basePatientId,
+                baseHospitalId
+            )
+        }
     }
 
     @DisplayName("환자 목록 이름으로 조회 성공 테스트")
@@ -136,20 +148,24 @@ internal class PatientControllerTest {
         // Given
         val basePatientId = 1L
         val visitResponseDto = GetVisitResponseDto.of(mockVisit())
-        every { patientService.getPatients(
-            0,
-            10,
-            NAME,
-            "김철수"
-        ) }returns listOf(GetPatientResponseDto(
-            id = 1,
-            visitList = mutableListOf(visitResponseDto),
-            name = "김철수",
-            registrationNumber = "202206100001",
-            genderCodeDescription = null,
-            birthday = null,
-            phoneNumber = null
-        ))
+        every {
+            patientService.getPatients(
+                0,
+                10,
+                NAME,
+                "김철수"
+            )
+        } returns listOf(
+            GetPatientResponseDto(
+                id = 1,
+                visitList = mutableListOf(visitResponseDto),
+                name = "김철수",
+                registrationNumber = "202206100001",
+                genderCodeDescription = null,
+                birthday = null,
+                phoneNumber = null
+            )
+        )
 
         // When
         val responseEntity = controller.getPatients(0, 10, NAME, "김철수")

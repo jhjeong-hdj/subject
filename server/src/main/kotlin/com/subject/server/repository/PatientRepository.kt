@@ -8,7 +8,7 @@ interface PatientRepository : JpaRepository<Patient, Long>, DslPatientRepository
 
 interface DslPatientRepository {
 
-    fun findWithVisitById(patientId : Long) : Patient?
+    fun findWithVisitById(patientId: Long): Patient?
     fun findByPageAndLimit(
         page: Long,
         limit: Long,

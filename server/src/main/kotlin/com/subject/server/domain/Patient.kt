@@ -2,10 +2,6 @@ package com.subject.server.domain
 
 import com.querydsl.core.annotations.QueryEntity
 import com.subject.server.domain.status.GenderCode
-import com.subject.server.domain.status.VisitHistoryStatus
-import com.subject.server.domain.status.VisitHistoryStatus.DELETE
-import com.subject.server.domain.status.VisitHistoryStatus.EXIST
-import com.subject.server.exception.CustomExceptionType
 import java.time.LocalDateTime
 import javax.persistence.CascadeType
 import javax.persistence.Column

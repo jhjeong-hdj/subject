@@ -5,7 +5,6 @@ import com.subject.server.domain.mockHospital
 import com.subject.server.domain.mockPatient
 import com.subject.server.domain.mockVisit
 import com.subject.server.domain.status.GenderCode
-import com.subject.server.domain.status.VisitHistoryStatus.DELETE
 import com.subject.server.dto.AddPatientRequestDto
 import com.subject.server.dto.UpdatePatientRequestDto
 import com.subject.server.exception.CustomException
@@ -139,7 +138,7 @@ internal class PatientServiceTest {
             patientService.getPatient(basePatientId)
         }
     }
-    
+
     //일어날 수가 없는 상황이라고 생각합니다
     @DisplayName("하나의 환자 정보 조회 실패 : 병원이 없음")
     @Test

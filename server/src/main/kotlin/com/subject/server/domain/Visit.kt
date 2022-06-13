@@ -30,10 +30,11 @@ class Visit(
     val receptionDate: LocalDateTime,
     @Enumerated(STRING)
     var status: VisitHistoryStatus = EXIST
-){
-    fun deleteVisitInfo(){
+) {
+    fun deleteVisitInfo() {
         this.status = DELETE
     }
+
     fun isExistOrThrow() {
         if (status == DELETE) throw CustomExceptionType.NOT_FOUND_PATIENT.toException()
     }

@@ -36,8 +36,9 @@ class PatientController(private val patientService: PatientService) {
     }
 
     @DeleteMapping("/{patientId}/{hospitalId}")
-    fun deletePatientVisitInfoFromHospital(@PathVariable patientId: Long,
-                                           @PathVariable hospitalId: Long
+    fun deletePatientVisitInfoFromHospital(
+        @PathVariable patientId: Long,
+        @PathVariable hospitalId: Long
     ): ResponseEntity<Void> {
         patientService.deletePatientVisitInfoFromHospital(patientId, hospitalId)
         return ResponseEntity.status(OK).build()
