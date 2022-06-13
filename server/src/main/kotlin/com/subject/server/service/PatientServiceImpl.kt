@@ -4,7 +4,6 @@ import com.subject.server.domain.Patient
 import com.subject.server.domain.Visit
 import com.subject.server.domain.status.GenderCode
 import com.subject.server.domain.status.GenderCode.Companion
-import com.subject.server.domain.status.PatientStatus.DELETE
 import com.subject.server.dto.AddPatientRequestDto
 import com.subject.server.dto.GetPatientResponseDto
 import com.subject.server.dto.UpdatePatientRequestDto
@@ -55,15 +54,15 @@ class PatientServiceImpl(
         )
     }
 
-    override fun deletePatient(id: Long) {
-        val findPatient = patientRepository.findByIdOrNull(id).extract()
-        findPatient.isExistOrThrow()
-        findPatient.status = DELETE
+    override fun deletePatient(patientId: Long, hospitalId: Long) {
+        val findPatient = patientRepository.findByIdOrNull(patientId).extract()
+        findPatient.visitList
+            .filter { it.hospital.id == hospitalId }
+            .map { it.deleteVisitInfo() }
     }
 
-    override fun getPatient(id: Long): GetPatientResponseDto {
-        val findPatient = patientRepository.findByIdOrNull(id).extract()
-        findPatient.isExistOrThrow()
+    override fun getPatient(patientId: Long): GetPatientResponseDto {
+        val findPatient = patientRepository.findByIdOrNull(patientId).extract()
         return GetPatientResponseDto.of(findPatient)
     }
 

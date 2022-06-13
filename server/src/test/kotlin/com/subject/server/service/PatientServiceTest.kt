@@ -5,7 +5,7 @@ import com.subject.server.domain.mockHospital
 import com.subject.server.domain.mockPatient
 import com.subject.server.domain.mockVisit
 import com.subject.server.domain.status.GenderCode
-import com.subject.server.domain.status.PatientStatus.DELETE
+import com.subject.server.domain.status.VisitHistoryStatus.DELETE
 import com.subject.server.dto.AddPatientRequestDto
 import com.subject.server.dto.UpdatePatientRequestDto
 import com.subject.server.exception.CustomException

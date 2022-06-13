@@ -2,9 +2,9 @@ package com.subject.server.domain
 
 import com.querydsl.core.annotations.QueryEntity
 import com.subject.server.domain.status.GenderCode
-import com.subject.server.domain.status.PatientStatus
-import com.subject.server.domain.status.PatientStatus.DELETE
-import com.subject.server.domain.status.PatientStatus.EXIST
+import com.subject.server.domain.status.VisitHistoryStatus
+import com.subject.server.domain.status.VisitHistoryStatus.DELETE
+import com.subject.server.domain.status.VisitHistoryStatus.EXIST
 import com.subject.server.exception.CustomExceptionType
 import java.time.LocalDateTime
 import javax.persistence.CascadeType
@@ -37,8 +37,6 @@ class Patient(
     val birthday: String?,
     @Column(length = 20)
     var phoneNumber: String?,
-    @Enumerated(STRING)
-    var status: PatientStatus = EXIST
 ) {
     fun getLastVisitedDate(): LocalDateTime? {
         if (visitList.isEmpty())
@@ -62,9 +60,5 @@ class Patient(
         this.name = name ?: this.name
         this.genderCode = genderCode ?: this.genderCode
         this.phoneNumber = phoneNumber ?: this.phoneNumber
-    }
-
-    fun isExistOrThrow() {
-        if (status == DELETE) throw CustomExceptionType.NOT_FOUND_PATIENT.toException()
     }
 }

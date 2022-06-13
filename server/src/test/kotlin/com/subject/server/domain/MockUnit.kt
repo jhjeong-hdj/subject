@@ -2,8 +2,8 @@ package com.subject.server.domain
 
 import com.subject.server.domain.status.GenderCode
 import com.subject.server.domain.status.GenderCode.CODE_M
-import com.subject.server.domain.status.PatientStatus
-import com.subject.server.domain.status.PatientStatus.EXIST
+import com.subject.server.domain.status.VisitHistoryStatus
+import com.subject.server.domain.status.VisitHistoryStatus.EXIST
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -15,7 +15,7 @@ fun mockPatient(
     birthday: String = "2022.06.07",
     phoneNumber: String = "010-1111-1111",
     visit: Visit? = null,
-    status: PatientStatus = EXIST
+    status: VisitHistoryStatus = EXIST
 ): Patient {
     val patient = Patient(
         id = patientId,

@@ -1,5 +1,5 @@
 package com.subject.server.domain.status
 
-enum class PatientStatus {
+enum class VisitHistoryStatus {
     EXIST, DELETE
 }

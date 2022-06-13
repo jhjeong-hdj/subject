@@ -1,6 +1,7 @@
 package com.subject.server.dto
 
 import com.subject.server.domain.Patient
+import com.subject.server.domain.status.VisitHistoryStatus.EXIST
 import com.subject.server.exception.extract
 
 data class GetPatientResponseDto(
@@ -16,7 +17,10 @@ data class GetPatientResponseDto(
         fun of(patient: Patient): GetPatientResponseDto {
             return GetPatientResponseDto(
                 id = patient.id.extract(),
-                visitList = patient.visitList.map { GetVisitResponseDto.of(it) }.toList(),
+                visitList = patient.visitList
+                    .filter { it.status == EXIST }
+                    .map { GetVisitResponseDto.of(it) }
+                    .toList(),
                 name = patient.name,
                 registrationNumber = patient.registrationNumber,
                 genderCodeDescription = patient.genderCode?.description,
