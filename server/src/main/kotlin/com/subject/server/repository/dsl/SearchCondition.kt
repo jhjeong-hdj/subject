@@ -7,7 +7,7 @@ enum class SearchCondition {
     NAME, BIRTHDAY, REGISTRATION;
 
     // 리팩토링이 필요해보입니다
-    fun getPatientBooleanExpressionByKeyword(keyword: String): BooleanExpression? {
+    fun getPatientBooleanExpressionByKeyword(keyword: String?): BooleanExpression? {
         if (this == NAME)
             return patient.name.eq(keyword)
         if (this == BIRTHDAY)

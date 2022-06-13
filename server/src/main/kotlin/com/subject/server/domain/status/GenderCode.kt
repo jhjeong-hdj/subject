@@ -1,5 +1,7 @@
 package com.subject.server.domain.status
 
+import com.subject.server.exception.CustomExceptionType
+
 enum class GenderCode(
     val description: String,
     val code: Char
@@ -13,7 +15,7 @@ enum class GenderCode(
                 .values()
                 .find { it.code == code }
                 ?.description
-                ?: throw Exception()
+                ?: throw CustomExceptionType.NOT_FOUND_GENDER.toException()
         }
 
         // todo : custom exception 으로 변경

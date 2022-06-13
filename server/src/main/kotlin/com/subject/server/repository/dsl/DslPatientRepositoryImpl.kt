@@ -21,7 +21,7 @@ class DslPatientRepositoryImpl(private val query: JPAQueryFactory) : DslPatientR
             .select(patient)
             .from(patient)
             .where(
-                condition?.getPatientBooleanExpressionByKeyword(keyword!!),
+                condition?.getPatientBooleanExpressionByKeyword(keyword),
                 patient.status.eq(EXIST)
             )
             .offset(page)
