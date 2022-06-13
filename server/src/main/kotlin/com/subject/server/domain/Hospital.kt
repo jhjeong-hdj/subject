@@ -15,9 +15,9 @@ class Hospital(
     @Column(name = "hospital_id")
     val id: Long? = null,
     @Column(length = 45)
-    var name: String,
+    val name: String,
     @Column(length = 20, unique = true)
-    var institutionNumber: String,
+    val institutionNumber: String,
     @Column(length = 10)
-    var directorName: String
+    val directorName: String
 )

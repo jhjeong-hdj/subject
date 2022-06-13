@@ -1,7 +1,5 @@
 package com.subject.server.domain.status
 
-import com.subject.server.exception.CustomExceptionType
-
 enum class GenderCode(
     val description: String,
     val code: Char
@@ -10,18 +8,14 @@ enum class GenderCode(
     CODE_F("여", 'F');
 
     companion object {
-        fun findGenderDescriptionByCode(code: Char): String {
-            return GenderCode
-                .values()
-                .find { it.code == code }
-                ?.description
-                ?: throw CustomExceptionType.NOT_FOUND_GENDER.toException()
+        private val genderCodes = GenderCode.values()
+        fun findGenderDescriptionByCode(code: Char): String? {
+            return findGenderByCode(code)?.description
         }
 
-        // todo : custom exception 으로 변경
         fun findGenderByCode(code: Char?): GenderCode? {
             return code?.let { initial ->
-                GenderCode.values().find { it.code == initial }
+                genderCodes.find { it.code == initial }
             }
         }
     }

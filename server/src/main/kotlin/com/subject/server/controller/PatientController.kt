@@ -5,6 +5,8 @@ import com.subject.server.dto.GetPatientResponseDto
 import com.subject.server.dto.UpdatePatientRequestDto
 import com.subject.server.repository.dsl.SearchCondition
 import com.subject.server.service.PatientService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
@@ -52,12 +54,13 @@ class PatientController(private val patientService: PatientService) {
 
     @GetMapping("/{page}/{limit}")
     fun getPatients(
-        @PathVariable page: Long,
-        @PathVariable limit: Long,
+        @PathVariable page: Int,
+        @PathVariable limit: Int,
         @RequestParam(value = "condition") condition: SearchCondition?,
         @RequestParam(value = "keyword") keyword: String?
-    ): ResponseEntity<List<GetPatientResponseDto>> {
-        val responseDtoList = patientService.getPatients(page, limit, condition, keyword)
+    ): ResponseEntity<Page<GetPatientResponseDto>> {
+        val pageable = PageRequest.of(page, limit)
+        val responseDtoList = patientService.getPatients(pageable, condition, keyword)
         return ResponseEntity.status(OK).body(responseDtoList)
     }
 }

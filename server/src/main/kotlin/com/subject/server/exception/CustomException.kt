@@ -15,8 +15,6 @@ enum class CustomExceptionType(
 ) {
     NOT_FOUND_HOSPITAL(HttpStatus.NOT_FOUND, "없는 병원 입니다."),
     NOT_FOUND_PATIENT(HttpStatus.NOT_FOUND, "없는 환자 입니다."),
-    NOT_FOUND_GENDER(HttpStatus.NOT_FOUND, "없는 성별 코드 입니다."),
-
     JPA_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "JPA Service Error");
 
     fun toException(message: String? = null): CustomException {

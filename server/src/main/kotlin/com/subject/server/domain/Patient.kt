@@ -40,7 +40,8 @@ class Patient(
 
         return visitList
             .sortedBy { it.receptionDate }
-            .reversed()[0]
+            .reversed()
+            .first()
             .receptionDate
     }
 

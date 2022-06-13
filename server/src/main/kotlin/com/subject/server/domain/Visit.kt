@@ -16,7 +16,6 @@ import javax.persistence.GenerationType.IDENTITY
 import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
-import javax.persistence.OneToMany
 
 @Entity
 @QueryEntity
@@ -41,7 +40,7 @@ class Visit(
         if (status == DELETE) throw CustomExceptionType.NOT_FOUND_PATIENT.toException()
     }
 
-    fun changePatient(patient: Patient){
+    fun changePatient(patient: Patient) {
         this.patient = patient
     }
 }

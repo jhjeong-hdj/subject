@@ -17,7 +17,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.support.PageableExecutionUtils
 import org.springframework.http.HttpStatus
+import java.util.function.LongSupplier
 
 internal class PatientControllerTest {
     private val patientService: PatientService = mockk()
@@ -147,31 +150,34 @@ internal class PatientControllerTest {
     fun getPatientsApiByNameTestSuccess() {
         // Given
         val basePatientId = 1L
+        val basePageable = PageRequest.of(0, 10)
         val visitResponseDto = GetVisitResponseDto.of(mockVisit())
         every {
             patientService.getPatients(
-                0,
-                10,
+                basePageable,
                 NAME,
                 "김철수"
             )
-        } returns listOf(
-            GetPatientResponseDto(
-                id = 1,
-                visitList = mutableListOf(visitResponseDto),
-                name = "김철수",
-                registrationNumber = "202206100001",
-                genderCodeDescription = null,
-                birthday = null,
-                phoneNumber = null
-            )
-        )
+        } returns PageableExecutionUtils.getPage(
+            mutableListOf(
+                GetPatientResponseDto(
+                    id = 1,
+                    visitList = mutableListOf(visitResponseDto),
+                    name = "김철수",
+                    registrationNumber = "202206100001",
+                    genderCodeDescription = null,
+                    birthday = null,
+                    phoneNumber = null
+                )
+            ),
+            basePageable,
+            LongSupplier { 100 })
 
         // When
         val responseEntity = controller.getPatients(0, 10, NAME, "김철수")
 
         // Then
         assertThat(responseEntity.statusCode).isEqualTo(HttpStatus.OK)
-        verify(exactly = 1) { patientService.getPatients(0, 10, NAME, "김철수") }
+        verify(exactly = 1) { patientService.getPatients(basePageable, NAME, "김철수") }
     }
 }

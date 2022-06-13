@@ -1,12 +1,14 @@
 package com.subject.server.repository.dsl
 
-import com.querydsl.core.group.GroupBy
-import com.querydsl.core.group.GroupBy.*
+import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.subject.server.domain.Patient
 import com.subject.server.domain.QPatient.patient
 import com.subject.server.domain.QVisit.visit
 import com.subject.server.repository.DslPatientRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.support.PageableExecutionUtils
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 
@@ -23,20 +25,41 @@ class DslPatientRepositoryImpl(private val query: JPAQueryFactory) : DslPatientR
     }
 
     override fun findByPageAndLimit(
-        page: Long,
-        limit: Long,
+        pageable: Pageable,
         condition: SearchCondition?,
         keyword: String?
-    ): List<Patient> {
-        return query
+    ): Page<Patient> {
+        val results = query
             .select(patient)
             .from(patient)
             .leftJoin(patient.visitList, visit)
             .where(
                 condition?.getPatientBooleanExpressionByKeyword(keyword)
             )
-            .offset(page)
-            .limit(limit)
+            .offset(pageable.offset)
+            .limit(pageable.pageSize.toLong())
             .fetch()
+
+        val totalCount = query
+            .select(patient)
+            .from(patient)
+            .leftJoin(patient.visitList, visit)
+            .where(
+                condition?.getPatientBooleanExpressionByKeyword(keyword)
+            )
+            .fetch().count()
+        return PageableExecutionUtils.getPage(results, pageable) { totalCount.toLong() }
+    }
+}
+
+enum class SearchCondition(
+    private val expression: (String?) -> BooleanExpression?
+) {
+    NAME({ keyword -> patient.name.contains(keyword) }),
+    BIRTHDAY({ keyword -> patient.birthday.contains(keyword) }),
+    REGISTRATION({ keyword -> patient.registrationNumber.contains(keyword) });
+
+    fun getPatientBooleanExpressionByKeyword(keyword: String?): BooleanExpression? {
+        return this.expression(keyword)
     }
 }

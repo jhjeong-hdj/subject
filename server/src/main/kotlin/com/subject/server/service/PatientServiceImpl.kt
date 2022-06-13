@@ -12,6 +12,8 @@ import com.subject.server.repository.PatientRepository
 import com.subject.server.repository.dsl.SearchCondition
 import com.subject.server.util.extract
 import com.subject.server.util.toLocalDateTime
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -67,19 +69,17 @@ class PatientServiceImpl(
     }
 
     override fun getPatients(
-        page: Long,
-        limit: Long,
+        pageable: Pageable,
         condition: SearchCondition?,
         keyword: String?
-    ): List<GetPatientResponseDto> {
+    ): Page<GetPatientResponseDto> {
         return patientRepository.findByPageAndLimit(
-            page = page,
-            limit = limit,
             condition = condition,
-            keyword = keyword
+            keyword = keyword,
+            pageable = pageable
         ).map {
             GetPatientResponseDto.of(it)
-        }.toList()
+        }
     }
 
     private fun receptionDateGenerator(): String {
