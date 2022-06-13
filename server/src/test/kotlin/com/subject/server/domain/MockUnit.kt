@@ -23,8 +23,7 @@ fun mockPatient(
         registrationNumber = registrationNumber,
         genderCode = genderCode,
         birthday = birthday,
-        phoneNumber = phoneNumber,
-        status = status
+        phoneNumber = phoneNumber
     )
     if (visit != null)
         patient.addVisit(visit)

@@ -1,16 +1,19 @@
-package com.subject.server.exception
+package com.subject.server.util
 
 import com.subject.server.domain.Hospital
 import com.subject.server.domain.Patient
+import com.subject.server.exception.CustomExceptionType.JPA_ERROR
+import com.subject.server.exception.CustomExceptionType.NOT_FOUND_HOSPITAL
+import com.subject.server.exception.CustomExceptionType.NOT_FOUND_PATIENT
 
 fun Hospital?.extract(message: String? = null): Hospital {
-    return this ?: throw CustomExceptionType.NOT_FOUND_HOSPITAL.toException(message)
+    return this ?: throw NOT_FOUND_HOSPITAL.toException(message)
 }
 
 fun Patient?.extract(message: String? = null): Patient {
-    return this ?: throw CustomExceptionType.NOT_FOUND_PATIENT.toException(message)
+    return this ?: throw NOT_FOUND_PATIENT.toException(message)
 }
 
 fun Long?.extract(): Long {
-    return this ?: throw CustomExceptionType.JPA_ERROR.toException()
+    return this ?: throw JPA_ERROR.toException()
 }

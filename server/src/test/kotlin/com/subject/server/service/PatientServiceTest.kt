@@ -132,28 +132,14 @@ internal class PatientServiceTest {
     fun getPatientFailPatientNotExist() {
         // Given
         val basePatientId = 1L
-        every { patientRepository.findByIdOrNull(basePatientId) } returns null
+        every { patientRepository.findWithVisitById(basePatientId) } returns null
 
         // When & then
         assertThrows<CustomException> {
             patientService.getPatient(basePatientId)
         }
     }
-
-    @DisplayName("하나의 환자 정보 조회 실패 : 환자가 삭제되어있음")
-    @Test
-    fun getPatientFailDeletedPatient() {
-        // Given
-        val basePatientId = 1L
-        val patient = mockPatient(status = DELETE)
-        every { patientRepository.findByIdOrNull(basePatientId) } returns patient
-
-        // When & then
-        assertThrows<CustomException> {
-            patientService.getPatient(basePatientId)
-        }
-    }
-
+    
     //일어날 수가 없는 상황이라고 생각합니다
     @DisplayName("하나의 환자 정보 조회 실패 : 병원이 없음")
     @Test
@@ -162,7 +148,7 @@ internal class PatientServiceTest {
         val basePatientId = 1L
         val mockPatient = mockPatient()
         mockPatient.addVisit(mockVisit(hospitalId = null))
-        every { patientRepository.findByIdOrNull(basePatientId) } returns mockPatient
+        every { patientRepository.findWithVisitById(basePatientId) } returns mockPatient
 
         // When & then
         assertThrows<CustomException> {
@@ -177,7 +163,7 @@ internal class PatientServiceTest {
         val basePatientId = 1L
         val mockPatient = mockPatient()
         mockPatient.addVisit(mockVisit())
-        every { patientRepository.findByIdOrNull(basePatientId) } returns mockPatient
+        every { patientRepository.findWithVisitById(basePatientId) } returns mockPatient
 
         // When
         val getPatientResponseDto = patientService.getPatient(basePatientId)

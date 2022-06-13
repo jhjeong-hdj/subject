@@ -2,7 +2,7 @@ package com.subject.server.dto
 
 import com.subject.server.domain.Patient
 import com.subject.server.domain.status.VisitHistoryStatus.EXIST
-import com.subject.server.exception.extract
+import com.subject.server.util.extract
 
 data class GetPatientResponseDto(
     val id: Long,

@@ -1,7 +1,7 @@
 package com.subject.server.dto
 
 import com.subject.server.domain.Visit
-import com.subject.server.exception.extract
+import com.subject.server.util.extract
 import java.time.LocalDateTime
 
 data class GetVisitResponseDto(
