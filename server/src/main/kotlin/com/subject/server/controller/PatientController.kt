@@ -24,13 +24,13 @@ import javax.validation.Valid
 class PatientController(private val patientService: PatientService) {
 
     @PostMapping
-    fun savePatient(@Valid @RequestBody requestDto: AddPatientRequestDto): ResponseEntity<Void> {
+    fun savePatient(@Valid @RequestBody requestDto: AddPatientRequestDto): ResponseEntity<Unit> {
         patientService.addPatient(requestDto)
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 
     @PatchMapping
-    fun updatePatient(@Valid @RequestBody requestDto: UpdatePatientRequestDto): ResponseEntity<Void> {
+    fun updatePatient(@Valid @RequestBody requestDto: UpdatePatientRequestDto): ResponseEntity<Unit> {
         patientService.updatePatient(requestDto)
         return ResponseEntity.status(OK).build()
     }

@@ -81,7 +81,7 @@ internal class PatientServiceTest {
         assertThat(savedPatient.phoneNumber).isEqualTo("010-1234-5678")
         assertThat(savedPatient.birthday).isEqualTo("2000.01.01")
         assertThat(savedPatient.visitList[0].receptionDate).isEqualTo("2022-06-01T13:00")
-        assertThat(savedPatient.visitList[0].hospital.id).isEqualTo(baseHospitalId)
+        assertThat(savedPatient.visitList[0].hospitalUid).isEqualTo(baseHospitalId)
     }
 
     @DisplayName("환자 정보 수정 실패")

@@ -76,9 +76,9 @@ class ThreadLocalLogTrace : LogTrace {
     }
 
     companion object {
-        const val START_PREFIX = "-->"
-        const val COMPLETE_PREFIX = "<--"
-        const val EX_PREFIX = "<X-"
+        private const val START_PREFIX = "-->"
+        private const val COMPLETE_PREFIX = "<--"
+        private const val EX_PREFIX = "<X-"
 
         private val log: Logger = LoggerFactory.getLogger(ThreadLocalLogTrace::class.java)
     }

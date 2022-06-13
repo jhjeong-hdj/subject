@@ -20,7 +20,7 @@ class Patient(
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "patient_id")
     val id: Long? = null,
-    @OneToMany(cascade = [CascadeType.PERSIST])
+    @OneToMany(cascade = [CascadeType.PERSIST], mappedBy = "patient")
     val visitList: MutableList<Visit> = emptyList<Visit>().toMutableList(),
     @Column(length = 45)
     var name: String,
@@ -45,6 +45,7 @@ class Patient(
     }
 
     fun addVisit(visit: Visit) {
+        visit.changePatient(this)
         visitList.add(visit)
     }
 

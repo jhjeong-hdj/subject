@@ -1,5 +1,7 @@
 package com.subject.server.repository.dsl
 
+import com.querydsl.core.group.GroupBy
+import com.querydsl.core.group.GroupBy.*
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.subject.server.domain.Patient
 import com.subject.server.domain.QPatient.patient
@@ -15,7 +17,7 @@ class DslPatientRepositoryImpl(private val query: JPAQueryFactory) : DslPatientR
         return query
             .select(patient)
             .from(patient)
-            .innerJoin(patient.visitList, visit)
+            .leftJoin(patient.visitList, visit)
             .where(patient.id.eq(patientId))
             .fetchOne()
     }
@@ -29,7 +31,7 @@ class DslPatientRepositoryImpl(private val query: JPAQueryFactory) : DslPatientR
         return query
             .select(patient)
             .from(patient)
-            .innerJoin(patient.visitList, visit)
+            .leftJoin(patient.visitList, visit)
             .where(
                 condition?.getPatientBooleanExpressionByKeyword(keyword)
             )

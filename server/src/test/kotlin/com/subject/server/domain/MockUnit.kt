@@ -33,18 +33,10 @@ fun mockPatient(
 
 fun mockVisit(
     hospitalId: Long? = 1L,
-    hospitalName: String = "테스트병원1",
-    institutionNumber: String = "1001",
-    directorName: String = "김원장",
     visitId: Long? = 1L,
     receptionDateString: String = "2022-06-01 13:00"
 ): Visit {
-    val hospital = mockHospital(
-        hospitalId,
-        hospitalName,
-        institutionNumber,
-        directorName
-    )
+    val hospital = mockHospital(hospitalId = hospitalId)
     val receptionDate = LocalDateTime.parse(
         receptionDateString,
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
@@ -52,7 +44,7 @@ fun mockVisit(
 
     return Visit(
         id = visitId,
-        hospital = hospital,
+        hospitalUid = hospital.id,
         receptionDate = receptionDate
     )
 }

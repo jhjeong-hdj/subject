@@ -13,7 +13,7 @@ data class GetVisitResponseDto(
         fun of(visit: Visit): GetVisitResponseDto {
             return GetVisitResponseDto(
                 id = visit.id.extract(),
-                hospitalId = visit.hospital.id.extract(),
+                hospitalId = visit.hospitalUid.extract(),
                 receptionDate = visit.receptionDate
             )
         }

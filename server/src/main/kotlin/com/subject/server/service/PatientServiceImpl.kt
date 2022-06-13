@@ -37,7 +37,7 @@ class PatientServiceImpl(
         )
         patient.addVisit(
             Visit(
-                hospital = findHospital,
+                hospitalUid = findHospital.id,
                 receptionDate = toLocalDateTime(requestDto.receptionDate)
             )
         )
@@ -57,7 +57,7 @@ class PatientServiceImpl(
     override fun deletePatientVisitInfoFromHospital(patientId: Long, hospitalId: Long) {
         val findPatient = patientRepository.findWithVisitById(patientId).extract()
         findPatient.visitList
-            .filter { it.hospital.id == hospitalId }
+            .filter { it.hospitalUid == hospitalId }
             .map { it.deleteVisitInfo() }
     }
 

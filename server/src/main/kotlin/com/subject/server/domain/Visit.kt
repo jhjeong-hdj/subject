@@ -10,12 +10,13 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType.STRING
 import javax.persistence.Enumerated
-import javax.persistence.FetchType.LAZY
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType.IDENTITY
 import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
 
 @Entity
 @QueryEntity
@@ -24,9 +25,10 @@ class Visit(
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "visit_id")
     val id: Long? = null,
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "hospital_id")
-    var hospital: Hospital,
+    var hospitalUid: Long? = null,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id")
+    var patient: Patient? = null,
     val receptionDate: LocalDateTime,
     @Enumerated(STRING)
     var status: VisitHistoryStatus = EXIST
@@ -37,5 +39,9 @@ class Visit(
 
     fun isExistOrThrow() {
         if (status == DELETE) throw CustomExceptionType.NOT_FOUND_PATIENT.toException()
+    }
+
+    fun changePatient(patient: Patient){
+        this.patient = patient
     }
 }
