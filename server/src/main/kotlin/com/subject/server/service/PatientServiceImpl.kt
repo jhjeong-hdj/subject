@@ -54,15 +54,15 @@ class PatientServiceImpl(
         )
     }
 
-    override fun deletePatient(patientId: Long, hospitalId: Long) {
-        val findPatient = patientRepository.findByIdOrNull(patientId).extract()
+    override fun deletePatientVisitInfoFromHospital(patientId: Long, hospitalId: Long) {
+        val findPatient = patientRepository.findWithVisitById(patientId).extract()
         findPatient.visitList
             .filter { it.hospital.id == hospitalId }
             .map { it.deleteVisitInfo() }
     }
 
     override fun getPatient(patientId: Long): GetPatientResponseDto {
-        val findPatient = patientRepository.findByIdOrNull(patientId).extract()
+        val findPatient = patientRepository.findWithVisitById(patientId).extract()
         return GetPatientResponseDto.of(findPatient)
     }
 

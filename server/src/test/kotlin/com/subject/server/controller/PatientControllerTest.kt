@@ -119,14 +119,14 @@ internal class PatientControllerTest {
     fun deletePatientApiTestSuccess() {
         // Given
         val basePatientId = 1L
-        every { patientService.deletePatient(basePatientId) } returns Unit
+        every { patientService.deletePatientVisitInfoFromHospital(basePatientId) } returns Unit
 
         // When
-        val responseEntity = controller.deletePatient(basePatientId)
+        val responseEntity = controller.deletePatientVisitInfoFromHospital(basePatientId)
 
         // Then
         assertThat(responseEntity.statusCode).isEqualTo(HttpStatus.OK)
-        verify(exactly = 1) { patientService.deletePatient(basePatientId) }
+        verify(exactly = 1) { patientService.deletePatientVisitInfoFromHospital(basePatientId) }
     }
 
     @DisplayName("환자 목록 이름으로 조회 성공 테스트")

@@ -3,6 +3,8 @@ package com.subject.server.repository.dsl
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.subject.server.domain.Patient
 import com.subject.server.domain.QPatient.patient
+import com.subject.server.domain.QVisit
+import com.subject.server.domain.QVisit.*
 import com.subject.server.domain.status.VisitHistoryStatus.EXIST
 import com.subject.server.repository.DslPatientRepository
 import org.springframework.stereotype.Repository
@@ -11,6 +13,15 @@ import org.springframework.transaction.annotation.Transactional
 @Repository
 @Transactional(readOnly = true)
 class DslPatientRepositoryImpl(private val query: JPAQueryFactory) : DslPatientRepository {
+    override fun findWithVisitById(patientId: Long): Patient? {
+        return query
+            .select(patient)
+            .from(patient)
+            .innerJoin(patient.visitList, visit)
+            .where(patient.id.eq(patientId))
+            .fetchOne()
+    }
+
     override fun findByPageAndLimit(
         page: Long,
         limit: Long,
@@ -20,7 +31,7 @@ class DslPatientRepositoryImpl(private val query: JPAQueryFactory) : DslPatientR
         return query
             .select(patient)
             .from(patient)
-            .join(patient.visitList).fetchJoin()
+            .innerJoin(patient.visitList, visit)
             .where(
                 condition?.getPatientBooleanExpressionByKeyword(keyword)
             )
