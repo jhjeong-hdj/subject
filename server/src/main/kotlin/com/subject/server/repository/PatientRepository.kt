@@ -1,6 +1,7 @@
 package com.subject.server.repository;
 
 import com.subject.server.domain.Patient
+import com.subject.server.dto.FindPatientListResponseDto
 import com.subject.server.repository.dsl.SearchCondition
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -15,5 +16,5 @@ interface DslPatientRepository {
         pageable: Pageable,
         condition: SearchCondition?,
         keyword: String?
-    ): Page<Patient>
+    ): Page<FindPatientListResponseDto>
 }

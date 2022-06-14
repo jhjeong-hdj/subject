@@ -4,16 +4,14 @@ import com.subject.server.domain.Patient
 import com.subject.server.domain.Visit
 import com.subject.server.domain.status.GenderCode
 import com.subject.server.domain.status.GenderCode.Companion
-import com.subject.server.dto.AddPatientRequestDto
-import com.subject.server.dto.GetPatientResponseDto
+import com.subject.server.dto.CreatePatientRequestDto
+import com.subject.server.dto.FindPatientResponseDto
 import com.subject.server.dto.UpdatePatientRequestDto
 import com.subject.server.repository.HospitalRepository
 import com.subject.server.repository.PatientRepository
-import com.subject.server.repository.dsl.SearchCondition
 import com.subject.server.util.extract
 import com.subject.server.util.toLocalDateTime
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
+import com.subject.server.util.toString
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -28,7 +26,7 @@ class PatientServiceImpl(
 ) : PatientService {
     private var num = 0
     private var date = ""
-    override fun addPatient(requestDto: AddPatientRequestDto) {
+    override fun addPatient(requestDto: CreatePatientRequestDto) {
         val findHospital = hospitalRepository.findByIdOrNull(requestDto.hospitalId).extract()
         val patient = Patient(
             name = requestDto.name,
@@ -63,27 +61,13 @@ class PatientServiceImpl(
             .map { it.deleteVisitInfo() }
     }
 
-    override fun getPatient(patientId: Long): GetPatientResponseDto {
+    override fun getPatient(patientId: Long): FindPatientResponseDto {
         val findPatient = patientRepository.findWithVisitById(patientId).extract()
-        return GetPatientResponseDto.of(findPatient)
-    }
-
-    override fun getPatients(
-        pageable: Pageable,
-        condition: SearchCondition?,
-        keyword: String?
-    ): Page<GetPatientResponseDto> {
-        return patientRepository.findByPageAndLimit(
-            condition = condition,
-            keyword = keyword,
-            pageable = pageable
-        ).map {
-            GetPatientResponseDto.of(it)
-        }
+        return FindPatientResponseDto.of(findPatient)
     }
 
     private fun receptionDateGenerator(): String {
-        val date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+        val date = LocalDateTime.now().toString("yyyyMMdd")
         if (date != this.date) {
             this.date = date
             num = 0

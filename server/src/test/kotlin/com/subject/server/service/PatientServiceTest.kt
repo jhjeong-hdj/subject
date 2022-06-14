@@ -5,7 +5,7 @@ import com.subject.server.domain.mockHospital
 import com.subject.server.domain.mockPatient
 import com.subject.server.domain.mockVisit
 import com.subject.server.domain.status.GenderCode
-import com.subject.server.dto.AddPatientRequestDto
+import com.subject.server.dto.CreatePatientRequestDto
 import com.subject.server.dto.UpdatePatientRequestDto
 import com.subject.server.exception.CustomException
 import com.subject.server.repository.HospitalRepository
@@ -38,7 +38,7 @@ internal class PatientServiceTest {
         // When & then
         assertThrows<CustomException> {
             patientService.addPatient(
-                AddPatientRequestDto(
+                CreatePatientRequestDto(
                     hospitalId = baseHospitalId,
                     receptionDate = "2022-06-01 13:00",
                     genderCode = 'M',
@@ -60,7 +60,7 @@ internal class PatientServiceTest {
 
         // When
         patientService.addPatient(
-            AddPatientRequestDto(
+            CreatePatientRequestDto(
                 hospitalId = baseHospitalId,
                 receptionDate = "2022-06-01 13:00",
                 genderCode = 'M',

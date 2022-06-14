@@ -1,10 +1,12 @@
 package com.subject.server.repository.dsl
 
+import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.subject.server.domain.Patient
 import com.subject.server.domain.QPatient.patient
 import com.subject.server.domain.QVisit.visit
+import com.subject.server.dto.FindPatientListResponseDto
 import com.subject.server.repository.DslPatientRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -28,11 +30,20 @@ class DslPatientRepositoryImpl(private val query: JPAQueryFactory) : DslPatientR
         pageable: Pageable,
         condition: SearchCondition?,
         keyword: String?
-    ): Page<Patient> {
+    ): Page<FindPatientListResponseDto> {
         val results = query
-            .select(patient)
+            .select(
+                Projections.constructor(
+                    FindPatientListResponseDto::class.java,
+                    patient.id,
+                    patient.name,
+                    patient.registrationNumber,
+                    patient.genderCode,
+                    patient.birthday,
+                    patient.phoneNumber
+                )
+            )
             .from(patient)
-            .leftJoin(patient.visitList, visit)
             .where(
                 condition?.getPatientBooleanExpressionByKeyword(keyword)
             )

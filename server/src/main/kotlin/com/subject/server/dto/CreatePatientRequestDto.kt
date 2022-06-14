@@ -4,7 +4,7 @@ import com.subject.server.util.StringDateTimeFormat
 import javax.validation.constraints.Pattern
 import javax.validation.constraints.Size
 
-data class AddPatientRequestDto(
+data class CreatePatientRequestDto(
     var hospitalId: Long,
     @field:StringDateTimeFormat(pattern = "yyyy-MM-dd HH:mm", message = "패턴이 올바르지 않습니다.")
     var receptionDate: String,

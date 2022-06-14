@@ -1,8 +1,10 @@
 package com.subject.server.controller
 
-import com.subject.server.dto.AddPatientRequestDto
-import com.subject.server.dto.GetPatientResponseDto
+import com.subject.server.dto.CreatePatientRequestDto
+import com.subject.server.dto.FindPatientListResponseDto
+import com.subject.server.dto.FindPatientResponseDto
 import com.subject.server.dto.UpdatePatientRequestDto
+import com.subject.server.repository.PatientRepository
 import com.subject.server.repository.dsl.SearchCondition
 import com.subject.server.service.PatientService
 import org.springframework.data.domain.Page
@@ -23,10 +25,13 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/patients")
-class PatientController(private val patientService: PatientService) {
+class PatientController(
+    private val patientService: PatientService,
+    private val patientRepository: PatientRepository
+) {
 
     @PostMapping
-    fun savePatient(@Valid @RequestBody requestDto: AddPatientRequestDto): ResponseEntity<Unit> {
+    fun savePatient(@Valid @RequestBody requestDto: CreatePatientRequestDto): ResponseEntity<Unit> {
         patientService.addPatient(requestDto)
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
@@ -47,7 +52,7 @@ class PatientController(private val patientService: PatientService) {
     }
 
     @GetMapping("/{patientId}")
-    fun getPatient(@PathVariable patientId: Long): ResponseEntity<GetPatientResponseDto> {
+    fun getPatient(@PathVariable patientId: Long): ResponseEntity<FindPatientResponseDto> {
         val responseDto = patientService.getPatient(patientId)
         return ResponseEntity.status(OK).body(responseDto)
     }
@@ -58,9 +63,13 @@ class PatientController(private val patientService: PatientService) {
         @PathVariable limit: Int,
         @RequestParam(value = "condition") condition: SearchCondition?,
         @RequestParam(value = "keyword") keyword: String?
-    ): ResponseEntity<Page<GetPatientResponseDto>> {
+    ): ResponseEntity<Page<FindPatientListResponseDto>> {
         val pageable = PageRequest.of(page, limit)
-        val responseDtoList = patientService.getPatients(pageable, condition, keyword)
+        val responseDtoList = patientRepository.findByPageAndLimit(
+            condition = condition,
+            keyword = keyword,
+            pageable = pageable
+        )
         return ResponseEntity.status(OK).body(responseDtoList)
     }
 }

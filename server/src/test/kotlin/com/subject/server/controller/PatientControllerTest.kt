@@ -1,10 +1,12 @@
 package com.subject.server.controller
 
 import com.subject.server.domain.mockVisit
-import com.subject.server.dto.AddPatientRequestDto
-import com.subject.server.dto.GetPatientResponseDto
-import com.subject.server.dto.GetVisitResponseDto
+import com.subject.server.dto.CreatePatientRequestDto
+import com.subject.server.dto.FindPatientListResponseDto
+import com.subject.server.dto.FindPatientResponseDto
+import com.subject.server.dto.FindVisitResponseDto
 import com.subject.server.dto.UpdatePatientRequestDto
+import com.subject.server.repository.PatientRepository
 import com.subject.server.repository.dsl.SearchCondition.NAME
 import com.subject.server.service.PatientService
 import io.mockk.CapturingSlot
@@ -24,7 +26,8 @@ import java.util.function.LongSupplier
 
 internal class PatientControllerTest {
     private val patientService: PatientService = mockk()
-    private val controller = PatientController(patientService)
+    private val patientRepository: PatientRepository = mockk()
+    private val controller = PatientController(patientService, patientRepository)
 
     @BeforeEach
     fun init() {
@@ -40,7 +43,7 @@ internal class PatientControllerTest {
     @Test
     fun createPatientApiTestSuccess() {
         // Given
-        val requestDto = AddPatientRequestDto(
+        val requestDto = CreatePatientRequestDto(
             hospitalId = 1,
             receptionDate = "2022-06-10 13:00",
             name = "김철수",
@@ -56,7 +59,7 @@ internal class PatientControllerTest {
         // Then
         assertThat(responseEntity.statusCode).isEqualTo(HttpStatus.CREATED)
 
-        val slot: CapturingSlot<AddPatientRequestDto> = slot()
+        val slot: CapturingSlot<CreatePatientRequestDto> = slot()
         verify(exactly = 1) { patientService.addPatient(capture(slot)) }
         val capturedRequestDto = slot.captured
         assertThat(capturedRequestDto.name).isEqualTo("김철수")
@@ -99,8 +102,8 @@ internal class PatientControllerTest {
     fun getPatientApiTestSuccess() {
         // Given
         val basePatientId = 1L
-        val visitResponseDto = GetVisitResponseDto.of(mockVisit())
-        every { patientService.getPatient(basePatientId) } returns GetPatientResponseDto(
+        val visitResponseDto = FindVisitResponseDto.of(mockVisit())
+        every { patientService.getPatient(basePatientId) } returns FindPatientResponseDto(
             id = 1,
             visitList = mutableListOf(visitResponseDto),
             name = "김철수",
@@ -149,20 +152,17 @@ internal class PatientControllerTest {
     @Test
     fun getPatientsApiByNameTestSuccess() {
         // Given
-        val basePatientId = 1L
         val basePageable = PageRequest.of(0, 10)
-        val visitResponseDto = GetVisitResponseDto.of(mockVisit())
         every {
-            patientService.getPatients(
+            patientRepository.findByPageAndLimit(
                 basePageable,
                 NAME,
                 "김철수"
             )
         } returns PageableExecutionUtils.getPage(
             mutableListOf(
-                GetPatientResponseDto(
+                FindPatientListResponseDto(
                     id = 1,
-                    visitList = mutableListOf(visitResponseDto),
                     name = "김철수",
                     registrationNumber = "202206100001",
                     genderCodeDescription = null,
@@ -178,6 +178,6 @@ internal class PatientControllerTest {
 
         // Then
         assertThat(responseEntity.statusCode).isEqualTo(HttpStatus.OK)
-        verify(exactly = 1) { patientService.getPatients(basePageable, NAME, "김철수") }
+        verify(exactly = 1) { patientRepository.findByPageAndLimit(basePageable, NAME, "김철수") }
     }
 }

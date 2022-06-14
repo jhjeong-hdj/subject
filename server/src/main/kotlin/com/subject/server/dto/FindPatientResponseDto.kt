@@ -4,9 +4,9 @@ import com.subject.server.domain.Patient
 import com.subject.server.domain.status.VisitHistoryStatus.EXIST
 import com.subject.server.util.extract
 
-data class GetPatientResponseDto(
+data class FindPatientResponseDto(
     val id: Long,
-    val visitList: List<GetVisitResponseDto>,
+    val visitList: List<FindVisitResponseDto>,
     val name: String,
     val registrationNumber: String,
     val genderCodeDescription: String?,
@@ -14,12 +14,12 @@ data class GetPatientResponseDto(
     val phoneNumber: String?
 ) {
     companion object {
-        fun of(patient: Patient): GetPatientResponseDto {
-            return GetPatientResponseDto(
+        fun of(patient: Patient): FindPatientResponseDto {
+            return FindPatientResponseDto(
                 id = patient.id.extract(),
                 visitList = patient.visitList
                     .filter { it.status == EXIST }
-                    .map { GetVisitResponseDto.of(it) }
+                    .map { FindVisitResponseDto.of(it) }
                     .toList(),
                 name = patient.name,
                 registrationNumber = patient.registrationNumber,
